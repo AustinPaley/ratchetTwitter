@@ -32,17 +32,18 @@ function create(msgObj){
   let li = document.createElement("li")
   li.innerHTML += msgObj.message
   ul.appendChild(li)
-  let img = document.createElement("img")
-  li.innerHTML += `<img src="${msgObj.real_name}">`
-  li.appendChild(img)
-  console.log(msgObj)
+  li.innerHTML += `<img id="${msgObj.id}" src="${msgObj.real_name}">`
 }
 //
 
 // DATA PUSHER//
 form.addEventListener('submit', e => {
-  debugger
-    e.preventDefault()
+      let li = document.createElement("li")
+      li.innerHTML += e.target.children[4].value
+      ul.prepend(li)
+      li.innerHTML += `<img id="${e.target.children[1].value}" src="${e.target.children[1].value}">`
+      // e.target.children[1].value
+      e.preventDefault()
       fetch(`https://fetch-message-in-the-bottle.herokuapp.com/api/v2/messages`, {
       method: "POST",
       headers:{'Content-Type':'application/json'},
@@ -50,4 +51,31 @@ form.addEventListener('submit', e => {
       })
     })
 })
-// //
+//
+
+// DATA UPDATER //
+// document.addEventListener('click', e => {
+//       if (e.target.id && e.target.localName == "img"){
+//         let deleteObj = document.getElementById(e.target.id)
+//         e.target.parentNode.parentNode.removeChild(deleteObj.parentNode)
+//         fetch(`https://fetch-message-in-the-bottle.herokuapp.com/api/v2/messages/${e.target.id}`, {
+//         method: "PATCH",
+//         headers:{'Content-Type':'application/json'},
+//         body: JSON.stringify({message:{message: e.target.children[4].value, real_name: e.target.children[1].value}
+//       })
+//       }
+// })
+//
+
+// DATA DELETER //
+document.addEventListener('click', e => {
+      if (e.target.id && e.target.localName == "img"){
+        let deleteObj = document.getElementById(e.target.id)
+        e.target.parentNode.parentNode.removeChild(deleteObj.parentNode)
+        fetch(`https://fetch-message-in-the-bottle.herokuapp.com/api/v2/messages/${e.target.id}`, {
+        method: "DELETE",
+        headers:{'Content-Type':'application/json'},
+      })
+      }
+})
+//
